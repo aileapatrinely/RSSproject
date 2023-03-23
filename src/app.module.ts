@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
+import { FeedsModule } from './feeds/feed.module';
+import { Feed } from './feeds/entities/feed.entity';
 
 @Module({
   imports: [
@@ -14,10 +16,11 @@ import { UsersModule } from './users/users.module';
       username: 'root',
       password: 'root',
       database: 'rss-feed',
-      entities: [User],
+      entities: [User, Feed],
       synchronize: true,
     }),
     UsersModule,
+    FeedsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
