@@ -2,10 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/entities/user.entity';
+import { UserEntity } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
-import { FeedsModule } from './feeds/feed.module';
-import { Feed } from './feeds/entities/feed.entity';
 
 @Module({
   imports: [
@@ -16,14 +14,13 @@ import { Feed } from './feeds/entities/feed.entity';
       username: 'root',
       password: 'root',
       database: 'rss_feed',
-      entities: [User, Feed],
+      entities: [UserEntity],
       synchronize: true,
       logging: true,
       migrations: ['dist/migrations/**/*{.ts,.js}'],
       migrationsRun: true,
     }),
     UsersModule,
-    FeedsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
