@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Feed } from './entities/feed.entity';
 @Injectable()
 export class FeedsService {
   constructor(
-    private dataSource: DataSource,
     @InjectRepository(Feed)
     private feedsRepository: Repository<Feed>,
   ) {}
