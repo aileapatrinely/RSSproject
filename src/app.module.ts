@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
-import { UserEntity } from './users/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,11 +15,12 @@ import { UserEntity } from './users/entities/user.entity';
       password: 'root',
       database: 'rss_feed',
       entities: ['dist/**/*.entity{.ts,.js}'],
-      synchronize: true,
+      synchronize: false,
       logging: true,
       migrations: ['dist/migrations/**/*{.ts,.js}'],
       migrationsRun: true,
     }),
+    AuthModule,
     UsersModule,
   ],
   controllers: [AppController],

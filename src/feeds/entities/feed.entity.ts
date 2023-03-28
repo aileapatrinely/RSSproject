@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { UserEntity } from 'src/users/entities/user.entity';
+import { Entity, Column, PrimaryGeneratedColumn, JoinTable, ManyToMany } from 'typeorm';
 
 @Entity()
 export class Feed {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()
@@ -16,4 +17,7 @@ export class Feed {
 
   @Column()
   publishedDate: Date;
+
+  @ManyToMany(() => UserEntity, (user) => user.feeds)
+  users: UserEntity[];
 }

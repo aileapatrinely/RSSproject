@@ -1,9 +1,22 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  JoinTable,
+  ManyToMany,
+} from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { Feed } from 'src/feeds/entities/feed.entity';
 
-@Entity()
+@Entity({
+  name: 'users',
+})
+@Exclude()
 export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   username: string;
@@ -13,4 +26,13 @@ export class UserEntity {
 
   @Column()
   password: string;
+
+  @ManyToMany(() => Feed, (feed) => feed.users)
+  @JoinTable()
+  feeds: Feed[];
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 }
