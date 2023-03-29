@@ -15,7 +15,4 @@ export class Feed {
 
   @Column()
   url: string;
-
-  @Column()
-  published_date: Date;
 }

@@ -18,12 +18,12 @@ export class FeedsService {
 
     if (checkUrl !== null) {
       this.subscribeToFeed(user_id, checkUrl);
+      return;
     }
     const feed = await this.feedsRepository.create(createFeedDto);
     const savedFeed = await this.feedsRepository.save(feed);
 
     const promise = await this.subscribeToFeed(user_id, savedFeed);
-    console.log(promise);
 
     return promise;
   }

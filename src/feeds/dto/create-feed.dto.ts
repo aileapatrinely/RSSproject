@@ -9,7 +9,4 @@ export class CreateFeedDto {
 
   @ApiProperty()
   url: string;
-
-  @ApiProperty()
-  publishedDate: Date;
 }
