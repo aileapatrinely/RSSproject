@@ -8,11 +8,5 @@ export class Feed {
   id: string;
 
   @Column()
-  title: string;
-
-  @Column()
-  description: string;
-
-  @Column()
   url: string;
 }
