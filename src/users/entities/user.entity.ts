@@ -27,9 +27,9 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @ManyToMany(() => Feed, (feed) => feed.users)
+  @ManyToMany(() => Feed)
   @JoinTable()
-  feeds: Feed[];
+  feed: Feed[];
 
   @BeforeInsert()
   async hashPassword() {

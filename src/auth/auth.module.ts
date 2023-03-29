@@ -8,10 +8,11 @@ import { JwtStrategy } from './jwt.strategy';
 import { UsersService } from 'src/users/users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { Feed } from 'src/feeds/entities/feed.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, Feed]),
     UsersModule,
     PassportModule.register({
       defaultStrategy: 'jwt',

@@ -1,5 +1,14 @@
-import { Controller, Post, Get, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
+import { UserDto } from 'src/users/dto/user.dto';
 import { CreateFeedDto } from './dto/create-feed.dto';
 import { FeedsService } from './feed.service';
 
@@ -9,7 +18,12 @@ export class FeedsController {
   constructor(private readonly feedService: FeedsService) {}
 
   @Post('feeds/create')
-  async createFeed(@Body() data: CreateFeedDto): Promise<any> {
-    await this.feedService.createFeed(data);
+  @UseGuards(AuthGuard())
+  async createFeed(
+    @Body() createFeedDto: CreateFeedDto,
+    @Request() req: any,
+  ): Promise<any> {
+    const user_id = req.user.id as UserDto;
+    await this.feedService.createFeed(createFeedDto, user_id);
   }
 }
