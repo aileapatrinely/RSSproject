@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Feed } from './entities/feed.entity';
 import { UsersFeeds } from './entities/users-feeds.entity';
+import * as RSSParser from 'rss-parser';
+
 @Injectable()
 export class FeedsService {
   constructor(
@@ -37,15 +39,26 @@ export class FeedsService {
     return promise;
   }
 
-  findAll(): Promise<Feed[]> {
-    return this.feedsRepository.find();
+  async getSubscibedList(user_id): Promise<string[]> {
+    const userFeeds = await this.userFeedsRepository.find(user_id);
+    const feedIds = userFeeds.map((userFeed) => userFeed.feed_id);
+    const feeds = feedIds.map(async (feed_id) => {
+      const feed = await this.feedsRepository.findOneBy({ id: feed_id });
+      return feed.url;
+    });
+    const feedUrls = await Promise.all(feeds);
+    return feedUrls;
   }
 
-  // findOne(id: number): Promise<Feed> {
-  //   return this.feedsRepository.findOneBy({ id });
-  // }
-
-  async remove(id: string): Promise<void> {
-    await this.feedsRepository.delete(id);
+  async getFeed(user_id): Promise<object> {
+    const feedUrls = await this.getSubscibedList(user_id);
+    console.log(feedUrls, '1');
+    const parser = new RSSParser();
+    const parsedFeeds = feedUrls.map(async (feedUrl) => {
+      const feed = await parser.parseURL(feedUrl);
+      return feed;
+    });
+    const feeds = await Promise.all(parsedFeeds);
+    return feeds;
   }
 }

@@ -26,4 +26,20 @@ export class FeedsController {
     const user_id = req.user.id as UserDto;
     await this.feedService.createFeed(createFeedDto, user_id);
   }
+
+  @Get('feeds/subscribed')
+  @UseGuards(AuthGuard())
+  async getSubscribedList(@Request() req: any): Promise<any> {
+    const user_id = req.user.id as UserDto;
+    await this.feedService.getSubscibedList(user_id);
+  }
+
+  @Get('feeds')
+  @UseGuards(AuthGuard())
+  async getFeed(@Request() req: any): Promise<any> {
+    const user_id = req.user.id as UserDto;
+    const feeds = await this.feedService.getFeed(user_id);
+    console.log(feeds);
+    return feeds;
+  }
 }
