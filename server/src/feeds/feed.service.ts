@@ -56,7 +56,7 @@ export class FeedsService {
     const parser = new RSSParser();
     const parsedFeeds = feedUrls.map(async (feedUrl) => {
       const feed = await parser.parseURL(feedUrl);
-      return feed;
+      return feed.items;
     });
     const feeds = await Promise.all(parsedFeeds);
     return feeds;
