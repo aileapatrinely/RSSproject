@@ -44,7 +44,7 @@ export class AuthController {
     return await this.authService.login(authenticateUserDto);
   }
 
-  @Get('auth/getUser')
+  @Get('auth/user')
   @UseGuards(AuthGuard())
   public async testAuth(@Req() req: any): Promise<JwtPayload> {
     return req.user;
