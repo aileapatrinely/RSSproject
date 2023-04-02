@@ -33,6 +33,11 @@ let FeedsController = class FeedsController {
     async getFeed(req) {
         const user_id = req.user.id;
         const feeds = await this.feedService.getFeed(user_id);
+        return feeds;
+    }
+    async getFeedByPubDate(req) {
+        const user_id = req.user.id;
+        const feeds = await this.feedService.getFeedByPubDate(user_id);
         console.log(feeds);
         return feeds;
     }
@@ -62,6 +67,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], FeedsController.prototype, "getFeed", null);
+__decorate([
+    (0, common_1.Get)('pubdate'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)()),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], FeedsController.prototype, "getFeedByPubDate", null);
 FeedsController = __decorate([
     (0, common_1.Controller)('api'),
     (0, swagger_1.ApiTags)('feeds'),

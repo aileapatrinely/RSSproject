@@ -54,7 +54,6 @@ let FeedsService = class FeedsService {
     }
     async getFeed(user_id) {
         const feedUrls = await this.getSubscibedList(user_id);
-        console.log(feedUrls, '1');
         const parser = new RSSParser();
         const parsedFeeds = feedUrls.map(async (feedUrl) => {
             const feed = await parser.parseURL(feedUrl);
@@ -62,6 +61,11 @@ let FeedsService = class FeedsService {
         });
         const feeds = await Promise.all(parsedFeeds);
         return feeds;
+    }
+    async getFeedByPubDate(user_id) {
+        const feed = await this.getFeed(user_id);
+        console.log(feed.items.pubDate.sort());
+        return feed;
     }
 };
 FeedsService = __decorate([

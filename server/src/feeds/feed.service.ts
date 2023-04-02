@@ -50,9 +50,8 @@ export class FeedsService {
     return feedUrls;
   }
 
-  async getFeed(user_id): Promise<object> {
+  async getFeed(user_id): Promise<any> {
     const feedUrls = await this.getSubscibedList(user_id);
-    console.log(feedUrls, '1');
     const parser = new RSSParser();
     const parsedFeeds = feedUrls.map(async (feedUrl) => {
       const feed = await parser.parseURL(feedUrl);

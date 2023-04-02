@@ -42,6 +42,71 @@ export const FeedsStore = defineStore({
                 const alertStore = useAlertStore()
                 alertStore.error(error)
             }
-        }
+        },
+        sortListBySelectedOption(feedList, selectedOption) {
+            if(feedList === undefined) {
+                return [];
+            }
+
+            const sortBySelectedName = selectedOption.name;
+
+            if (sortBySelectedName === 'Published Date') {
+                return feedList.sort(sortByDateDesc);
+              }
+             
+              if (sortBySelectedName === 'Title') {
+                return feedList.sort(sortByTitleAsc);
+              }
+             
+              if (sortBySelectedName === 'Description') {
+                return feedList.sort(sortByDescriptionAsc);
+              }
+             
+              return feedList;
+        },
+        sortByDateDesc(itemA, itemB) {
+            const dateA = dayjs(itemA.pubDate);
+            const dateB = dayjs(itemB.pubDate);
+
+
+            if (dateA.isBefore(dateB)) {
+                return 1;
+            }
+            if (dateA.isAfter(dateB)) {
+                return -1;
+            }
+            // names must be equal
+            return 0;
+        },
+        sortByTitleAsc(itemA, itemB) {
+            // ignore upper and lowercase
+            const titleA = itemA.title.toLowerCase();
+            const titleB = itemB.title.toLowerCase();
+
+
+            if (titleA < titleB) {
+                return -1;
+            }
+            if (titleA > titleB) {
+                return 1;
+            }
+            // names must be equal
+            return 0;
+        },
+        sortByDescriptionAsc(itemA, itemB) {
+            // ignore upper and lowercase
+            const descriptionA = itemA.description.toLowerCase();
+            const descriptionB = itemB.description.toLowerCase();
+
+
+            if (descriptionA < descriptionB) {
+                return -1;
+            }
+            if (descriptionA > descriptionB) {
+                return 1;
+            }
+            // names must be equal
+            return 0;
+        },
     }
 })
