@@ -27,19 +27,25 @@
           />
    </template>
 </template>
-   
-   <script lang="ts">
-   import { Component, Prop } from 'vue-property-decorator';
-   import FeedItem from './FeedItem.vue';
-   
-   
+
+    <script setup lang="ts">
+    import { Component, Prop } from 'vue-property-decorator';
+    import FeedItem from './FeedItem.vue';
+    import { PropType } from 'vue';
+
    @Component({
     components: {
       FeedItem,
     },
    })
    export default class FeedList {
-   
-    @Prop({ required: true }) private readonly feeds!: [];
+
+    const props = defineProps({
+        feeds: {
+            type: Array as PropType<Object[]>,
+            required: true,
+        },
+
+    })
    }
    </script>

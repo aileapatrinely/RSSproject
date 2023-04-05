@@ -6,5 +6,4 @@ export declare class FeedsController {
     createFeed(createFeedDto: CreateFeedDto, req: any): Promise<any>;
     getSubscribedList(req: any): Promise<any>;
     getFeed(req: any): Promise<any>;
-    getFeedByPubDate(req: any): Promise<any>;
 }

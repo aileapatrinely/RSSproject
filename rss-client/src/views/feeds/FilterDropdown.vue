@@ -1,108 +1,82 @@
 <template>
+  <div>
+    <button type="button" :id="id" aria-haspopup="true" aria-expanded="false" :disabled="disabled">{{ title }}</button>
     <div>
-      <button type="button" aria-haspopup="true" aria-expanded="false" :disabled="disabled">{{ title }}</button>
-      <div>
-        <a v-if="defaultTitle" @click="updateAllOptions">{{ defaultTitle }}</a>
-        <div></div>
-        <a v-for="option in options" :key="option.id">
-          <input type="checkbox" :id="`option-${option.id}`" :value="option" v-model="selected" @click="updateOption(option)">
-          <label @click="updateOption(option)">{{ option.name }}</label>
-        </a>
-      </div>
+      <div></div>
+      <a @click="updateOption(option)" v-for="option in options" :key="option.id">
+        <input type="radio" :id="`option-${option.id}`" v-model="selected" @click="updateOption(option)">
+        <label>{{ option.name }}</label>
+      </a>
     </div>
-   </template>
-   
-   
-   <script lang="ts">
-   import {
-    Component, Prop, PropSync,
-   } from 'vue-property-decorator';
-   
-   
-   @Component
-   export default class FilterDropdown {
-    @Prop() private readonly options!: [];
-   
-   
-    @PropSync('selectedOptions') private selected!: [];
-   
-   
-    @Prop() private readonly defaultTitle!: string;
-   
-   
-    @Prop() private readonly disabled!: boolean;
-   
-   
-    @Prop() private readonly title!: string;
-   
-   
-    @Prop({ default: () => false }) private readonly closeOnSelect!: boolean;
-    private get id(): string { return this.uuid(); }
+  </div>
+</template>
 
-
-private mounted() {
-  const dropdown = $(`#${this.id}`);
-
-
-  dropdown.on('click', (e) => {
+   <script setup lang="ts">
+import type IOption from '../../interfaces/IOption';
+import * as utils from '../../utils/utils'
+import { ref, type PropType, onMounted } from 'vue';
+import $ from 'jquery';
+const props = defineProps({
+  options: {
+    type: Array as PropType<IOption[]>,
+    required: true,
+  },
+  defaultTitle: {
+    type: String,
+    required: false,
+  },
+  disabled: {
+    type: Boolean,
+    required: false,
+  },
+  title: {
+    type: String,
+    required: false,
+  },
+  closeOnSelect: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+const emits = defineEmits<{
+  (e: 'update:selectedOption', value: IOption): void;
+}>();
+const selected = ref<IOption | null>(null);
+const id = utils.uuid();
+onMounted(() => {
+  const dropdown = $(`#${id}`);
+  dropdown.on('click', () => {
     if (dropdown.attr('aria-expanded') === 'true') {
-      this.closeDropdown();
+      closeDropdown();
       return;
     }
     $('body').trigger('click');
-    this.openDropdown();
+    openDropdown();
   });
-
-
   $('body').on('click', (e) => {
     if (!dropdown.is(e.target) && dropdown.has(e.target).length === 0 && $('.show').has(e.target).length === 0) {
-      this.closeDropdown();
+      closeDropdown();
     }
   });
-}
-
-
-private openDropdown() {
-  const dropdown = document.querySelector(`#${this.id}`);
+});
+const openDropdown = () => {
+  const dropdown = $(`#${id}`);
   dropdown.parent().addClass('show');
   dropdown.attr('aria-expanded', 'true');
   dropdown.next('.dropdown-menu').addClass('show');
-}
-
-
-private closeDropdown() {
-  const dropdown = document.querySelector(`#${this.id}`);
+};
+const closeDropdown = () => {
+  const dropdown = $(`#${id}`);
   dropdown.parent().removeClass('show');
   dropdown.attr('aria-expanded', 'false');
   dropdown.next('.dropdown-menu').removeClass('show');
-}
-
-
-private updateOption(option) {
-  const index = this.selected.findIndex(o => o.id === option.id);
-  if (index !== -1) {
-    this.selected.splice(index, 1);
-  } else {
-    this.selected.push(option);
+};
+const updateOption = (option: IOption) => {
+  selected.value = option;
+  if (props.closeOnSelect) {
+    closeDropdown();
   }
-
-
-  if (this.closeOnSelect) {
-    this.closeDropdown();
-  }
-
-
-  this.$emit('update:selectedOptions', this.selected);
-}
-
-
-private updateAllOptions() {
-  this.selected.splice(0, this.selected.length);
-  this.$emit('update:selectedOptions', this.selected);
-  this.closeDropdown();
-}
-}
+  emits('update:selectedOption', option);
+};
 </script>
-
-
-

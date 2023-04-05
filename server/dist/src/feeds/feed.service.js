@@ -62,11 +62,6 @@ let FeedsService = class FeedsService {
         const feeds = await Promise.all(parsedFeeds);
         return feeds;
     }
-    async getFeedByPubDate(user_id) {
-        const feed = await this.getFeed(user_id);
-        console.log(feed.items.pubDate.sort());
-        return feed;
-    }
 };
 FeedsService = __decorate([
     (0, common_1.Injectable)(),

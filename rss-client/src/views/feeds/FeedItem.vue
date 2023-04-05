@@ -1,63 +1,45 @@
 <template>
-      <div>
         <div>
             <div>
-                <image>{{ this.imageUrl }}</image>
-            </div>
-            <div>
-              <span>
-                {{ this.title }}
-              </span>
-            </div>
-            <div>
-              <span>
-                {{ this.description }}
-              </span>
-            </div>
-            <div>
-              <span>
-                {{ this.pubDate }}
-              </span>
-            </div>
-            <div>
-              <FilterDropdown/>
+                <div>
+                    <image>{{ this.imageUrl }}</image>
+                </div>
+                <div>
+                    <span>
+                        {{ this.title }}
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        {{ this.description }}
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        {{ this.pubDate }}
+                    </span>
+                </div>
             </div>
         </div>
-      </div>
-   </template>
-   
-   <script lang="ts">
-   import { Component, Prop } from 'vue-property-decorator';
-   import FilterDropdown from './FilterDropdown.vue';
+    </template>
 
-   
-   @Component({
-    components: {
-      FilterDropdown,
-    },
-   })
-   export default class FeedItem {
-    @Prop({ required: true }) private feed;
-   
-    private get title() {
-      return this.feed.title;
-    }
-   
-   
-    private get description() {
-      return this.feed.description;
-    }
-   
-    private get image() {
-      return this.feed.imageUrl;
-    }
-   
-    private get pubDate() {
-      return this.feed.pubDate;
-    }
-   }
-   </script>
-   
-   
-   
-   
+    <script setup lang="ts">
+    import FilterDropdown from './FilterDropdown.vue';
+    import { computed, ref, PropType } from 'vue';
+
+    const props = defineProps({
+        feed: {
+            type: Object as PropType<Object>,
+            required: true,
+        }
+    })
+
+    const title = computed(() => props.feed.title);
+
+    const description = computed(() => props.feed.description);
+
+    const imageUrl = computed(() => props.feed.imageUrl);
+
+    const pubDate = computed(() => props.feed.pubDate);
+
+</script>

@@ -12,5 +12,4 @@ export declare class FeedsService {
     } & UsersFeeds>;
     getSubscibedList(user_id: any): Promise<string[]>;
     getFeed(user_id: any): Promise<any>;
-    getFeedByPubDate(user_id: any): Promise<any>;
 }
