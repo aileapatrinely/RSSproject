@@ -6,8 +6,6 @@ import { useFeedStore, useAlertStore } from '@/stores'
 import { router } from '@/router'
 const feedStore = useFeedStore()
 const alertStore = useAlertStore()
-const route = useRoute()
-let title = 'Subscribe to Feed'
 const schema = Yup.object().shape({
   url: Yup.string().required('Url is required'),
 })
