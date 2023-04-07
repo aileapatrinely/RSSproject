@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { fetchWrapper } from '@/helpers'
-import { router } from '@/router'
 import { useAlertStore } from '@/stores'
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/feeds`
@@ -36,78 +35,41 @@ export const useFeedStore = defineStore({
         },
         async getMyFeed() {
             try {
-                const feed = await fetchWrapper.get(`${baseUrl}/feeds`)
-
-                this.feeds = feed
+                const feed = await fetchWrapper.get(`${baseUrl}`)
+                return feed;
             } catch (error) {
                 const alertStore = useAlertStore()
                 alertStore.error(error)
             }
         },
-        sortListBySelectedOption(feedList, selectedOption) {
-            if(feedList === undefined) {
-                return [];
-            }
-
-            const sortBySelectedName = selectedOption.name;
-
-            if (sortBySelectedName === 'Published Date') {
-                return feedList.sort(sortByDateDesc);
-              }
-             
-              if (sortBySelectedName === 'Title') {
-                return feedList.sort(sortByTitleAsc);
-              }
-             
-              if (sortBySelectedName === 'Description') {
-                return feedList.sort(sortByDescriptionAsc);
-              }
-             
-              return feedList;
+        async sortByTitle(feedList) {
+            const sortedList = []
+            const sortedFeed = await feedList.sort((itemA, itemB)=>itemA.title < itemB.title ? -1 : (itemA.title > itemB.title) ? 1 : 0);
+                sortedFeed.map((feed)=>{
+                    sortedList.push(feed)
+                    return sortedList
+                })
+                return sortedList
         },
-        sortByDateDesc(itemA, itemB) {
-            const dateA = dayjs(itemA.pubDate);
-            const dateB = dayjs(itemB.pubDate);
-
-
-            if (dateA.isBefore(dateB)) {
-                return 1;
-            }
-            if (dateA.isAfter(dateB)) {
-                return -1;
-            }
-            // names must be equal
-            return 0;
+        async sortByDescription(feedList) {
+            const sortedList = []
+            const sortedFeed = await feedList.sort((itemA, itemB)=>itemA.contentSnippet < itemB.contentSnippet ? -1 : (itemA.contentSnippet > itemB.contentSnippet) ? 1 : 0);
+                sortedFeed.map((feed)=>{
+                    sortedList.push(feed)
+                    return sortedList
+                })
+                return sortedList
         },
-        sortByTitleAsc(itemA, itemB) {
-            // ignore upper and lowercase
-            const titleA = itemA.title.toLowerCase();
-            const titleB = itemB.title.toLowerCase();
+        async sortByPubDate(feedList) {
+            const sortedList = []
+            const sortedFeed = await feedList.sort((itemA, itemB) =>itemA.isoDate < (itemB.isoDate) ? 1 : (itemA.isoDate > itemB.isoDate) ? -1: 0)
 
-
-            if (titleA < titleB) {
-                return -1;
-            }
-            if (titleA > titleB) {
-                return 1;
-            }
-            // names must be equal
-            return 0;
-        },
-        sortByDescriptionAsc(itemA, itemB) {
-            // ignore upper and lowercase
-            const descriptionA = itemA.description.toLowerCase();
-            const descriptionB = itemB.description.toLowerCase();
-
-
-            if (descriptionA < descriptionB) {
-                return -1;
-            }
-            if (descriptionA > descriptionB) {
-                return 1;
-            }
-            // names must be equal
-            return 0;
+            sortedFeed.map((feed)=>{
+                sortedList.push(feed)
+                return sortedList
+            })
+            console.log(sortedList)
+            return sortedList
         },
     }
 })

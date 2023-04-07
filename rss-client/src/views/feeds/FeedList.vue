@@ -1,51 +1,56 @@
-<template>
-    <div>
-        <template v-if="this.feed.length > 0">
-          <div>
-            <div>
-                  <div>
-                    <h2>
-                      'My Feed'
-                    </h2>
-                  </div>
-            </div>
-          </div>
-              <div>
-                Title
-              </div>
-              <div>
-                Description
-              </div>
-              <div>
-                Published Date
-              </div>
-            </div>
-          <FeedItem
-            v-for="feed in this.feeds"
-            :key="this.feed.title"
-            :feed="feed"
-          />
-   </template>
-</template>
-
-    <script setup lang="ts">
-    import { Component, Prop } from 'vue-property-decorator';
-    import FeedItem from './FeedItem.vue';
-    import { PropType } from 'vue';
-
-   @Component({
-    components: {
-      FeedItem,
-    },
-   })
-   export default class FeedList {
-
-    const props = defineProps({
-        feeds: {
-            type: Array as PropType<Object[]>,
-            required: true,
-        },
-
+<script setup lang="ts">
+import { useFeedStore } from '../../stores';
+import FeedItem from './FeedItem.vue';
+import { onMounted, ref } from 'vue';
+const feedStore = useFeedStore();
+const feed = []
+let sortedFeed: any = []
+const isSorted = ref(false)
+const isReady = ref(false);
+onMounted(async() => {
+  const feeds = await feedStore.getMyFeed()
+  feeds.map((array)=>{
+    array.map((item)=>{
+      feed.push(item)
+      return feed
     })
-   }
-   </script>
+    return feed
+  })
+
+  isReady.value = true
+})
+async function sortByTitle(){
+  const feeds = await feedStore.sortByTitle(feed)
+  sortedFeed = feeds
+  isSorted.value = true;
+  return sortedFeed
+}
+async function sortByDescription(){
+  const feeds = await feedStore.sortByDescription(feed)
+  sortedFeed = feeds
+  isSorted.value = true;
+  return sortedFeed
+}
+async function sortByPubDate(){
+  const feeds = await feedStore.sortByPubDate(feed)
+  sortedFeed = feeds
+  isSorted.value = true;
+  return sortedFeed
+}
+</script>
+
+<template>
+  <div>
+    <div>
+      <button @click="sortByTitle()">Sort by title</button>
+      <button @click="sortByDescription()">Sort by description</button>
+      <button @click="sortByPubDate()">Sort by published date</button>
+    </div>
+    <template v-if="isReady === true && isSorted === false">
+      <FeedItem v-for="item in feed" :key="item" :item="item"/>
+    </template>
+    <template v-if="isSorted === true">
+      <FeedItem v-for="item in sortedFeed" :key="item" :item="item"/>
+    </template>
+  </div>
+</template>

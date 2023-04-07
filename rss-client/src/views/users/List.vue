@@ -11,7 +11,6 @@ onMounted(async() => {
   feeds.push(feedUrl)
   return feeds
 })
-  console.log(feedUrls)
   isReady.value = true;
   return feedUrls
 })

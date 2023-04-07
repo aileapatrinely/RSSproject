@@ -10,6 +10,7 @@
   "dependencies": {
     "@vue/cli": "^5.0.8",
     "class-component": "^14.0.0",
+    "dayjs": "^1.11.7",
     "papaparse": "^5.4.1",
     "pinia": "^2.0.13",
     "vee-validate": "^4.5.11",
