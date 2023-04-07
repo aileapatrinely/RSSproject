@@ -3,31 +3,32 @@ import { fetchWrapper } from '@/helpers'
 import { router } from '@/router'
 import { useAlertStore } from '@/stores'
 
-const baseUrl = `${import.meta.env.VITE_API_URL}/feeds`;
+const baseUrl = `${import.meta.env.VITE_API_URL}/feeds`
 
-export const FeedsStore = defineStore({
-    id: 'auth',
+export const useFeedStore = defineStore({
+    id: 'feeds',
     state: () => ({
-        feeds: null,
+        feeds: [],
+        feed:{}
     }),
     actions: {
         async createFeed(url) {
             try {
-                const feeds = await fetchWrapper.post(`${this.baseUrl}/create`, url)
+                const feeds = await fetchWrapper.post(`${baseUrl}/create`, url)
 
                 // update pinia state
                 this.feeds = feeds
-                router.push(this.returnUrl, '/subscribed')
+                // router.push(this.returnUrl, '/subscribed')
             } catch (error) {
                 const alertStore = useAlertStore()
                 alertStore.error(error)
             }
         },
-        async getSubscribedFeeds() {
+        async getAll() {
+            this.feeds = { loading: true }
             try {
-                const feeds = await fetchWrapper.get(`${this.baseUrl}/subscribed`)
-
-                this.feeds = feeds
+                const feeds = await fetchWrapper.get(`${baseUrl}/subscribed`)
+                return feeds;
             } catch (error) {
                 const alertStore = useAlertStore()
                 alertStore.error(error)
@@ -35,7 +36,7 @@ export const FeedsStore = defineStore({
         },
         async getMyFeed() {
             try {
-                const feed = await fetchWrapper.get(`${this.baseUrl}/feeds`)
+                const feed = await fetchWrapper.get(`${baseUrl}/feeds`)
 
                 this.feeds = feed
             } catch (error) {

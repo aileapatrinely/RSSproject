@@ -42,7 +42,7 @@ let FeedsService = class FeedsService {
         const promise = await this.userFeedsRepository.save(createUserFeedsDto);
         return promise;
     }
-    async getSubscibedList(user_id) {
+    async getSubscribedList(user_id) {
         const userFeeds = await this.userFeedsRepository.find(user_id);
         const feedIds = userFeeds.map((userFeed) => userFeed.feed_id);
         const feeds = feedIds.map(async (feed_id) => {
@@ -53,7 +53,7 @@ let FeedsService = class FeedsService {
         return feedUrls;
     }
     async getFeed(user_id) {
-        const feedUrls = await this.getSubscibedList(user_id);
+        const feedUrls = await this.getSubscribedList(user_id);
         const parser = new RSSParser();
         const parsedFeeds = feedUrls.map(async (feedUrl) => {
             const feed = await parser.parseURL(feedUrl);

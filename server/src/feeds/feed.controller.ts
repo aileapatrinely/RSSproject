@@ -31,7 +31,8 @@ export class FeedsController {
   @UseGuards(AuthGuard())
   async getSubscribedList(@Request() req: any): Promise<any> {
     const user_id = req.user.id as UserDto;
-    await this.feedService.getSubscibedList(user_id);
+    const feeds = await this.feedService.getSubscribedList(user_id);
+    return feeds;
   }
 
   @Get('feeds')

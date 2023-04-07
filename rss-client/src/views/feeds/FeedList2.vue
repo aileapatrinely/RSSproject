@@ -8,7 +8,7 @@ const { user } = storeToRefs(authStore)
 <template>
   <div v-if="user">
     <h1 style="color:black">Hi {{ user.username }}!</h1>
-    <p style="color:black">You're logged in to your RSS Feed!!</p>
-    <p><router-link to="/users" class="btn btn-link">Go to my feed</router-link></p>
+    <p style="color:black">This will eventually be the feed</p>
+    <p><router-link to="/add">Add a new feed</router-link></p>
   </div>
 </template>

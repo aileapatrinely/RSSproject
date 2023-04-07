@@ -25,11 +25,11 @@ async function onSubmit(values) {
 
 <template>
   <div class="card m-3">
-    <h4 class="card-header">Register</h4>
+    <h4 class="card-header" style="color:black">Register</h4>
     <div class="card-body">
       <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">
         <div class="form-group">
-          <label>Email</label>
+          <label style="color:black">Email</label>
           <Field
             name="email"
             type="text"
@@ -39,7 +39,7 @@ async function onSubmit(values) {
           <div class="invalid-feedback">{{ errors.email }}</div>
         </div>
         <div class="form-group">
-          <label>Username</label>
+          <label style="color:black">Username</label>
           <Field
             name="username"
             type="text"
@@ -49,7 +49,7 @@ async function onSubmit(values) {
           <div class="invalid-feedback">{{ errors.username }}</div>
         </div>
         <div class="form-group">
-          <label>Password</label>
+          <label style="color:black">Password</label>
           <Field
             name="password"
             type="password"

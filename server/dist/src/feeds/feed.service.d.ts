@@ -10,6 +10,6 @@ export declare class FeedsService {
         user_id: any;
         feed_id: any;
     } & UsersFeeds>;
-    getSubscibedList(user_id: any): Promise<string[]>;
+    getSubscribedList(user_id: any): Promise<string[]>;
     getFeed(user_id: any): Promise<any>;
 }

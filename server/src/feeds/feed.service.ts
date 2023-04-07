@@ -39,7 +39,7 @@ export class FeedsService {
     return promise;
   }
 
-  async getSubscibedList(user_id): Promise<string[]> {
+  async getSubscribedList(user_id): Promise<string[]> {
     const userFeeds = await this.userFeedsRepository.find(user_id);
     const feedIds = userFeeds.map((userFeed) => userFeed.feed_id);
     const feeds = feedIds.map(async (feed_id) => {
@@ -51,7 +51,7 @@ export class FeedsService {
   }
 
   async getFeed(user_id): Promise<any> {
-    const feedUrls = await this.getSubscibedList(user_id);
+    const feedUrls = await this.getSubscribedList(user_id);
     const parser = new RSSParser();
     const parsedFeeds = feedUrls.map(async (feedUrl) => {
       const feed = await parser.parseURL(feedUrl);

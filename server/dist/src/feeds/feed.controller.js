@@ -28,7 +28,8 @@ let FeedsController = class FeedsController {
     }
     async getSubscribedList(req) {
         const user_id = req.user.id;
-        await this.feedService.getSubscibedList(user_id);
+        const feeds = await this.feedService.getSubscribedList(user_id);
+        return feeds;
     }
     async getFeed(req) {
         const user_id = req.user.id;

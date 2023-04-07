@@ -14,12 +14,13 @@ async function onSubmit(values) {
 </script>
 
 <template>
-  <div class="card m-3">
-    <h4 class="card-header">Login</h4>
+  <title style="color:black">Login to your RSS feed</title>
+  <div class="card m-3" color="black">
+    <h4 class="card-header" style="color:black">Login</h4>
     <div class="card-body">
       <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">
         <div class="form-group">
-          <label>Username</label>
+          <label style="color:black">Username</label>
           <Field
             name="username"
             type="text"
@@ -29,7 +30,7 @@ async function onSubmit(values) {
           <div class="invalid-feedback">{{ errors.username }}</div>
         </div>
         <div class="form-group">
-          <label>Password</label>
+          <label style="color:black">Password</label>
           <Field
             name="password"
             type="password"
