@@ -3,8 +3,6 @@ import { fileURLToPath, URL } from 'url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import url from '@rollup/plugin-url'
-import dynamicImportVars from '@rollup/plugin-dynamic-import-vars'
-import { babel } from '@rollup/plugin-babel'
 
 // https://vitejs.dev/config/
 export default defineConfig({

@@ -7,13 +7,19 @@ const feed = []
 let sortedFeed: any = []
 const isSorted = ref(false)
 const isReady = ref(false);
+let index = 0;
+let arrayIndex = 0;
 onMounted(async() => {
   const feeds = await feedStore.getMyFeed()
   feeds.map((array)=>{
     array.map((item)=>{
+      item.index = index
+      item.array = arrayIndex
       feed.push(item)
+      index ++
       return feed
     })
+    arrayIndex ++
     return feed
   })
 
@@ -37,6 +43,7 @@ async function sortByPubDate(){
   isSorted.value = true;
   return sortedFeed
 }
+
 </script>
 
 <template>

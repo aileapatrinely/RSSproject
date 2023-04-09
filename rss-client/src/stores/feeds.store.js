@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import { fetchWrapper } from '@/helpers'
 import { useAlertStore } from '@/stores'
+import { router } from '@/router'
+
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/feeds`
 
@@ -8,7 +10,7 @@ export const useFeedStore = defineStore({
     id: 'feeds',
     state: () => ({
         feeds: [],
-        feed:{}
+        feed:{},
     }),
     actions: {
         async createFeed(url) {
@@ -36,6 +38,7 @@ export const useFeedStore = defineStore({
         async getMyFeed() {
             try {
                 const feed = await fetchWrapper.get(`${baseUrl}`)
+                this.feeds = feed
                 return feed;
             } catch (error) {
                 const alertStore = useAlertStore()
@@ -68,8 +71,13 @@ export const useFeedStore = defineStore({
                 sortedList.push(feed)
                 return sortedList
             })
-            console.log(sortedList)
             return sortedList
         },
+        async getData(arrayIndex, index) {
+            const feed = await this.getMyFeed()
+            const array = feed[arrayIndex]
+            const article = array[index]
+            return article
+        }
     }
 })

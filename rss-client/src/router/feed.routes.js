@@ -1,10 +1,10 @@
-import { Layout, FeedList } from '@/views/feeds'
+import { Layout, FeedList, FeedDetails } from '@/views/feeds'
 
 export default {
     path: '/feed',
     component: Layout,
     children: [
         { path: '', component: FeedList },
-        // { path: 'add', component: AddNewFeed}
+        { path: '/article/:arrayIndex/:index', component: FeedDetails}
     ]
 }
