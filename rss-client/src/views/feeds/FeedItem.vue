@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import fs from 'fs'
 import path from 'path'
+import { downloadImage } from '../../utils/utils'
 const props = defineProps<{
     item: {
         title,
@@ -21,16 +22,14 @@ const pubDate = computed(() => props.item.pubDate);
 const doc = props.item.content.split('src="')
 const doc2 = doc[1].split('" />')
 const imageUrl = doc2[0]
-const imagePath = path.join(__dirname, 'public', 'image.png')
-const imageSrc = await downloadImage()
+const imagePath = path.join(__dirname, 'public', imageUrl)
+let imageSrc = ''
 
-async function downloadImage(){
-    const response = await fetch(imageUrl)
-    const buffer = await response.arrayBuffer()
-    fs.writeFileSync(imagePath, Buffer.from(buffer))
-}
-
-const img = ref(imageSrc)
+onMounted(()=>{
+    downloadImage(imageUrl).then((src)=>{
+        imageSrc = src
+    })
+})
 </script>
 
 <template>
@@ -43,7 +42,7 @@ const img = ref(imageSrc)
                 </h3>
                 <div v-if="props.item.content.contains('img')">
                     <body>
-                        <img src="{{ img }}">
+                        <img src="{{ imageSrc }}">
                     </body>
                 </div>
             </div>
