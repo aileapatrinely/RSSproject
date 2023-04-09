@@ -26,9 +26,10 @@ const imagePath = path.join(__dirname, 'public', imageUrl)
 let imageSrc = ''
 
 onMounted(()=>{
-    downloadImage(imageUrl).then((src)=>{
-        imageSrc = src
-    })
+    if (imageUrl) {
+        imageSrc = await downloadImage(imageUrl)
+        return imageSrc
+    }
 })
 </script>
 
