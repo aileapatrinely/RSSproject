@@ -31,9 +31,8 @@ const imageUrl = doc2[0]
                 {{ title }}
                 </h3>
                 <div v-if="props.item.content.contains('img')">
-                    <body>
-                        <img src="{{ imageUrl }}">
-                    </body>
+                    <img src="src/assets.gollum.jpeg">
+                    <!-- <img src="{{ imageUrl }}"> -->
                 </div>
             </div>
             <div>
