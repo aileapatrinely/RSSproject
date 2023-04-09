@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import fs from 'fs'
 import path from 'path'
 const props = defineProps<{
@@ -30,11 +30,7 @@ async function downloadImage(){
     fs.writeFileSync(imagePath, Buffer.from(buffer))
 }
 
-
-
-const img = new Image()
-img.src = imageUrl
-document.body.appendChild(img)
+const img = ref(imageSrc)
 </script>
 
 <template>
@@ -47,7 +43,7 @@ document.body.appendChild(img)
                 </h3>
                 <div v-if="props.item.content.contains('img')">
                     <body>
-                        <img src="{{ imageSrc }}">
+                        <img src="{{ img }}">
                     </body>
                 </div>
             </div>
