@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import fs from 'fs'
-import path from 'path'
-import { downloadImage } from '../../utils/utils'
+import { computed } from 'vue';
+
 const props = defineProps<{
     item: {
         title,
@@ -22,15 +20,6 @@ const pubDate = computed(() => props.item.pubDate);
 const doc = props.item.content.split('src="')
 const doc2 = doc[1].split('" />')
 const imageUrl = doc2[0]
-const imagePath = path.join(__dirname, 'public', imageUrl)
-let imageSrc = ''
-
-onMounted(()=>{
-    if (imageUrl) {
-        imageSrc = await downloadImage(imageUrl)
-        return imageSrc
-    }
-})
 </script>
 
 <template>
@@ -43,7 +32,7 @@ onMounted(()=>{
                 </h3>
                 <div v-if="props.item.content.contains('img')">
                     <body>
-                        <img src="{{ imageSrc }}">
+                        <img src="{{ imageUrl }}">
                     </body>
                 </div>
             </div>
