@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
+import fs from 'fs'
+import path from 'path'
 const props = defineProps<{
     item: {
         title,
@@ -16,13 +18,23 @@ const creator = computed(() => props.item.creator);
 const description = computed(() => props.item.contentSnippet);
 const link = computed(() => props.item.link);
 const pubDate = computed(() => props.item.pubDate);
-const content = computed(()=> props.item.content)
 const doc = props.item.content.split('src="')
 const doc2 = doc[1].split('" />')
-const image = new URL(doc2[0])
-onMounted(()=>{
-    console.log(image)
-})
+const imageUrl = doc2[0]
+const imagePath = path.join(__dirname, 'public', 'image.png')
+const imageSrc = await downloadImage()
+
+async function downloadImage(){
+    const response = await fetch(imageUrl)
+    const buffer = await response.arrayBuffer()
+    fs.writeFileSync(imagePath, Buffer.from(buffer))
+}
+
+
+
+const img = new Image()
+img.src = imageUrl
+document.body.appendChild(img)
 </script>
 
 <template>
@@ -34,7 +46,9 @@ onMounted(()=>{
                 {{ title }}
                 </h3>
                 <div v-if="props.item.content.contains('img')">
-                <!-- <img src="{{ image }}"> -->
+                    <body>
+                        <img src="{{ imageSrc }}">
+                    </body>
                 </div>
             </div>
             <div>
