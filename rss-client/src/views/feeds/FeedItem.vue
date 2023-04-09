@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 const props = defineProps<{
     item: {
         title,
         creator,
         contentSnippet,
         link,
-        pubDate
+        pubDate,
+        content
     }
 }>();
 
@@ -15,6 +16,13 @@ const creator = computed(() => props.item.creator);
 const description = computed(() => props.item.contentSnippet);
 const link = computed(() => props.item.link);
 const pubDate = computed(() => props.item.pubDate);
+const content = computed(()=> props.item.content)
+const doc = props.item.content.split('src="')
+const doc2 = doc[1].split('" />')
+const image = new URL(doc2[0])
+onMounted(()=>{
+    console.log(image)
+})
 </script>
 
 <template>
@@ -25,6 +33,9 @@ const pubDate = computed(() => props.item.pubDate);
                 <h3 style="color:black">
                 {{ title }}
                 </h3>
+                <div v-if="props.item.content.contains('img')">
+                <!-- <img src="{{ image }}"> -->
+                </div>
             </div>
             <div>
                 <h5 style="color:darkgray">
